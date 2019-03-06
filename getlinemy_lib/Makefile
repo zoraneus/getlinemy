@@ -32,7 +32,7 @@ COLOR_THEME	=	$(YELLO_C)
 SRC_PATH	=	./
 INCLUDE_PATH	=	../include
 
-SRC	=
+SRC		=	getline.c
 
 CFLAGS	=	-Wall \
 			-Wextra \
