@@ -19,6 +19,13 @@ static void my_strpush(char **target, char c)
     *target = buffer;
 }
 
+static char *send_data(char *buff)
+{
+    if (my_strlen(buff) > 1)
+        return (buff);
+    return (NULL);
+}
+
 char *get_next_line(int fd)
 {
     int size = 0;
@@ -28,8 +35,7 @@ char *get_next_line(int fd)
     do {
         size = read(fd, &c, 1);
         if (size == 0) {
-            free(buffer);
-            return (NULL);
+            return (send_data(buffer));
         }
         if (c != '\n')
             my_strpush(&buffer, c);
