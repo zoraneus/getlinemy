@@ -1,8 +1,8 @@
 ##
 ## EPITECH PROJECT, 2018
-## Makefile
+## Fairefichier
 ## File description:
-## Compiles the libmy.a library binary
+## This is a fairefichier
 ##
 
 ECHO	=	/bin/echo -e
@@ -26,45 +26,40 @@ LIGHT_MAGEN	=	"\e[95m"
 LIGHT_CYAN	=	"\e[96m"
 LINE_RETURN	=	$(ECHO) ""
 
-NAME	=	stringmy
-COLOR_THEME	=	$(MAGEN_C)
-MY_PATH	=	.
+NAME	        =	stringmy
+COLOR_THEME		=	$(YELLO_C)
+DEBUG_THEME     =	$(CYAN_C)
+SRC_PATH		=	./
 INCLUDE_PATH	=	../include
 
-SRC_MY	=	src/my_char_is.c \
-		src/my_count_line.c \
-		src/my_getnbr.c \
-		src/my_line_lenght.c \
-		src/my_revstr.c \
-		src/my_strcat.c \
-		src/my_strcmp.c \
-		src/my_strcpy.c \
-		src/my_strdup.c \
-		src/my_str_isneg.c \
-		src/my_str_isnum.c \
-		src/my_strlen.c \
-		src/my_strreplace.c \
-		src/my_strstr.c \
-		src/my_str_to_line_arr.c \
-		src/my_str_to_word_arr.c \
-		src/my_atoi.c \
-		src/my_itoa.c
+SRC		=	src/my_char_is.c \
+			src/my_count_line.c \
+			src/my_line_lenght.c \
+			src/my_revstr.c \
+			src/my_strcat.c \
+			src/my_strcmp.c \
+			src/my_strcpy.c \
+			src/my_strdup.c \
+			src/my_str_isneg.c \
+			src/my_str_isnum.c \
+			src/my_strlen.c \
+			src/my_strreplace.c \
+			src/my_strstr.c \
+			src/my_atoi.c \
+			src/my_itoa.c \
+			src/my_strtok.c
 
 CFLAGS	=	-Wall \
-			-W \
-			-Werror \
+			-Wextra \
 			-I $(INCLUDE_PATH)
 
-SRCS	=	$(SRC_MY:%=$(MY_PATH)/%)
+DEBUG_FLAGS	=	-g3 -gdwarf-4
+
+SRCS	=	$(SRC:%=$(SRC_PATH)/%)
 
 OBJ	=	$(SRCS:.c=.o)
 
 all:	message $(NAME)
-
-$(NAME):	$(OBJ)
-	@ar rc ./lib$(NAME).a $(OBJ) && \
-		$(ECHO) $(BOLD_T)$(GREEN_C)"\nCOMPILED:" $(DEFAULT)$(LIGHT_GREEN) "lib$(NAME).a\n" $(DEFAULT) || \
-		$(ECHO) $(RED_C)$(UNDLN_T)$(BOLD_T)"BUILD FAILED:" $(LIGHT_RED) "lib$(NAME).a"$(DEFAULT)"\n"
 
 message:
 	@$(LINE_RETURN)
@@ -75,6 +70,11 @@ message:
 	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"   /_______  /  |____|    |____|_  /|___|\____|__  / \______  /    \____|__  // ______|" $(DEFAULT)
 	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"           \/                    \/              \/         \/             \/ \/       " $(DEFAULT)
 	@$(LINE_RETURN)
+
+$(NAME):	$(OBJ)
+	@ar rc ./lib$(NAME).a $(OBJ) && \
+		$(ECHO) $(BOLD_T)$(GREEN_C)"\n[✔] COMPILED:" $(DEFAULT)$(LIGHT_GREEN) "lib$(NAME).a" $(DEFAULT) || \
+		$(ECHO) $(RED_C)$(BOLD_T)"[✘] "$(UNDLN_T)"BUILD FAILED:" $(LIGHT_RED) "lib$(NAME).a"$(DEFAULT)
 
 clean:
 	@$(RM) $(OBJ)
@@ -88,11 +88,15 @@ fclean:	clean
 		$(RED_C)$(BOLD_T)"DELETED: "$(DEFAULT) \
 		$(LIGHT_RED)"Binary lib$(NAME).a"$(DEFAULT)
 
-re:		fclean all
+re:	fclean all
+
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: COLOR_THEME = $(DEBUG_THEME)
+debug: fclean all
 
 %.o: %.c
 	@$(CC) -c $(CFLAGS) -o $@ $< && \
-		$(ECHO) $(DIM_T) "cc $(CFLAGS) -c "$<$(COLOR_THEME)" -o "$@ $(DEFAULT) || \
+		$(ECHO) $(DIM_T) "cc $(CFLAGS) -c "$<$(COLOR_THEME)$(BOLD_T)" -o "$@ $(DEFAULT) || \
 		$(ECHO) "\n"$(MAGEN_C) $(UNDLN_T)$(BOLD_T)"cc $(CFLAGS) -c "$<" -o "$@$(DEFAULT)"\n"
 
-.PHONY: all $(NAME) message clean fclean re
+.PHONY: all $(NAME) message clean fclean re debug
